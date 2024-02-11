@@ -33,6 +33,8 @@ public class DynamicProgramming {
 //		System.err.println(canConstruct("abcdef", new String[] { "ab", "abc", "cd", "def", "abcd" })); // should return true
 //		System.err.println(canConstruct("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})); // result should false
 
+//		System.err.println(countConstruct("purple", new String[] { "purp", "p", "ur", "le", "purl" })); // should return 2
+
 //		System.err.println(howConstruct("purple", new String[] {"purp", "p", "ur", "le", "purl	"}));
 //		System.err.println(howConstruct("abcd", new String[] { "a", "b", "c", "d" })); 
 
@@ -477,6 +479,24 @@ public class DynamicProgramming {
 		}
 
 		return table[target.length()];
+	}
+
+	static int countConstruct(String target, String[] wordBank) {
+
+		if (target.equals("")) {
+			return 1;
+		}
+		int totalCount = 0;
+		for (String word : wordBank) {
+			if (target.startsWith(word)) {
+				String suffix = target.substring(word.length());
+				totalCount += countConstruct(suffix, wordBank);
+
+			}
+
+		}
+
+		return totalCount;
 	}
 
 	static boolean canConstructRecursion(String target, String[] words, HashMap<String, Boolean> memo) {
