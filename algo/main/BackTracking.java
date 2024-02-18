@@ -1,5 +1,7 @@
 package main;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +26,67 @@ public class BackTracking {
 //		System.err.println(subsets(new int[] { 1, 2, 3 })); // result: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
 
 //		System.err.println(letterCombinations("23")); // result: [ad, ae, af, bd, be, bf, cd, ce, cf]
-		
+
 //		Input: nums = [1,2,3]
 //		Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-		System.err.println(permute(new int[] {1,2,3}));
+//		System.err.println(permute(new int[] { 1, 2, 3 }));
+
+//		Input: candidates = [2,3,5], target = 8
+//		Output: [[2,2,2,2],[2,3,3],[3,5]]
+//		System.err.println(combinationSum(new int[] { 2, 3, 5 }, 8));
+
+//		Input: n = 3
+//		Output: ["((()))","(()())","(())()","()(())","()()()"]
+		System.err.println(generateParenthesis(3));
 
 	}
 
+//	EASY P
+	/**
+	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+	 * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+	 * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+	 * = left; this.right = right; } }
+	 */
+
+	static class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+	}
+
+	public List<String> binaryTreePaths(TreeNode root) {
+		List<String> res = new ArrayList<>();
+		binary(root, res, new ArrayList<>());
+		return res;
+	}
+
+	static void binary(TreeNode root, List<String> res, List<Integer> tmp) {
+		if (root == null) {
+			return;
+		}
+
+		tmp.add(root.val);
+
+		if (root.left == null && root.right == null) {
+			StringBuilder a = new StringBuilder();
+			for (int i = 0; i < tmp.size() - 1; i++) {
+				a.append(tmp.get(i)).append("->");
+			}
+			a.append(tmp.get(tmp.size() - 1));
+			res.add(a.toString());
+		}
+
+		binary(root.left, res, tmp);
+		binary(root.right, res, tmp);
+
+		tmp.remove(tmp.size() - 1);
+
+	}
+
+//	END OF EASY P
+
+//	MEDIUM P
 	static boolean exist(char[][] board, String word) {
 		boolean[][] visited = new boolean[board.length][board[0].length];
 
@@ -145,6 +201,8 @@ public class BackTracking {
 		}
 
 		String[] maps = mapping.get(d.charAt(idx) - '0');
+		System.err.println(Arrays.toString(maps));
+		System.err.println(idx);
 		for (String s : maps) {
 			letterCombinations(d, c + s, res, mapping, idx + 1);
 		}
@@ -154,18 +212,18 @@ public class BackTracking {
 	static List<List<Integer>> permute(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
 		permute(nums, res, new ArrayList<>());
-	
+
 		return res;
 	}
-	
+
 	static void permute(int[] nums, List<List<Integer>> res, List<Integer> tmp) {
-		
-		if(tmp.size() == nums.length) {
+
+		if (tmp.size() == nums.length) {
 			res.add(new ArrayList<>(tmp));
 			return;
 		}
-		
-		for(int n : nums) {
+
+		for (int n : nums) {
 			if (tmp.contains(n)) {
 				continue;
 			}
@@ -173,9 +231,150 @@ public class BackTracking {
 			permute(nums, res, tmp);
 			tmp.remove(tmp.size() - 1);
 		}
-		
-		
-	
+
 	}
+
+	static List<List<Integer>> combinationSum(int[] candidates, int target) {
+		List<List<Integer>> r = new ArrayList<>();
+		combinationSum(candidates, target, r, new ArrayList<>(), 0);
+		return r;
+	}
+
+	static void combinationSum(int[] candidates, int target, List<List<Integer>> res, List<Integer> tmp, int idx) {
+		if (target == 0) {
+			res.add(new ArrayList<>(tmp));
+			return;
+		}
+		if (target < 0) {
+			return;
+		}
+
+		for (int i = idx; i < candidates.length; i++) {
+			tmp.add(candidates[i]);
+			combinationSum(candidates, target - candidates[i], res, tmp, i);
+			tmp.remove(tmp.size() - 1);
+
+		}
+
+	}
+
+	static List<String> generateParenthesis(int n) {
+		List<String> res = new ArrayList<>();
+		generateParenthesis(n, "", res, 0, 0);
+		return res;
+	}
+
+	static void generateParenthesis(int n, String s, List<String> res, int open, int close) {
+		if (s.length() == n * 2) {
+			res.add(s);
+			return;
+		}
+
+		if (open < n) {
+			generateParenthesis(n, s + "(", res, open + 1, close);
+		}
+
+		if (close < open) {
+			generateParenthesis(n, s + ")", res, open, close + 1);
+		}
+	}
+
+//	END OF MEDIUM P
+
+//	HARD P
+
+//	Input: board = [
+//	["5","3",".",".","7",".",".",".","."],
+//	["6",".",".","1","9","5",".",".","."],
+//	[".","9","8",".",".",".",".","6","."],
+//	["8",".",".",".","6",".",".",".","3"],
+//	["4",".",".","8",".","3",".",".","1"],
+//	["7",".",".",".","2",".",".",".","6"],
+//	[".","6",".",".",".",".","2","8","."],
+//	[".",".",".","4","1","9",".",".","5"],
+//	[".",".",".",".","8",".",".","7","9"]]
+//	Output: [
+//	["5","3","4","6","7","8","9","1","2"],
+//	["6","7","2","1","9","5","3","4","8"],
+//	["1","9","8","3","4","2","5","6","7"],
+//	["8","5","9","7","6","1","4","2","3"],
+//	["4","2","6","8","5","3","7","9","1"],
+//	["7","1","3","9","2","4","8","5","6"],
+//	["9","6","1","5","3","7","2","8","4"],
+//	["2","8","7","4","1","9","6","3","5"],
+//	["3","4","5","2","8","6","1","7","9"]]
+
+	static boolean solve(char[][] board, int row, int col) {
+		if (row == board.length) {
+			return true;
+		}
+
+		// if the row ends then we will move to next row and colunm will be started
+		// again from 0
+		if (col == board[0].length) {
+			return solve(board, row + 1, 0);
+		}
+
+		// if there is a number already filled then we will skip it
+		if (board[row][col] != '.') {
+			return solve(board, row, col + 1);
+		}
+
+		// trying different numbers for the cell
+		for (char i = '1'; i <= '9'; i++) {
+			if (isSafe(board, row, col, i)) { // checking if a particular number is valid or not at that place
+				board[row][col] = i; // writing number at the current cell
+				// checking that next part of the sudoku is solved or not
+				if (solve(board, row, col + 1)) {
+					return true;
+				} else {
+					// backtracking by removing the numbers which are wrong
+					board[row][col] = '.';
+				}
+			}
+		}
+
+		return false;
+	}
+
+	static boolean isSafe(char[][] board, int row, int col, int num) {
+		// checking row wise
+		for (int i = 0; i < board.length; i++) {
+			if (board[row][i] == num) {
+				return false;
+			}
+		}
+
+		// checking column wise
+		for (int i = 0; i < board[0].length; i++) {
+			if (board[i][col] == num) {
+				return false;
+			}
+		}
+
+		// checking the 3x3 outer box
+		int sqrt = (int) (Math.sqrt(board.length)); // it will find the length of the boxes of the sudoku i.e. 3 for
+													// this question
+		int rowStart = row - row % sqrt; // to find the starting position of the current box
+		int colStart = col - col % sqrt;
+		for (int i = rowStart; i < rowStart + sqrt; i++) { // it will go till the end of the box (start index + length
+															// of the box)
+			for (int j = colStart; j < colStart + sqrt; j++) {
+				if (board[i][j] == num) {
+					return false;
+				}
+			}
+		}
+
+		// if the number is not present at any of the cases then return true that yes it
+		// is the right place
+		return true;
+	}
+
+	static void solveSudoku(char[][] board) {
+		solve(board, 0, 0);
+	}
+
+//	END OF HARD P
 
 }
