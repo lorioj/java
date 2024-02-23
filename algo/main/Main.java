@@ -1,4 +1,5 @@
 package main;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -188,6 +189,118 @@ public class Main {
 ////	
 
 //		System.err.println(howSum(7, new int[] {3,4,5}));
+
+//		System.err.println(prime(15));
+
+//		List<List<Integer>> res = new ArrayList<>();
+//		bMulti(new int[] { 2, 3, 4 }, 8, res, new ArrayList<>(), 0);
+//		System.err.println(res);
+
+		String sql = "SELECT * FROM SCHEMA_NAME.TABLE_NAME WHERE TABLE_NAME.COLUMN_NAME = 'SFDSDFSFDSF' ";
+		StringBuilder sb = new StringBuilder();
+		constructsql(sql, sb, "");
+		System.err.println(sb.toString());
+	}
+
+	static void constructsql(String sql, StringBuilder res, String r) {
+
+		if (sql.equals("")) {
+			res.append(r);
+			return;
+		}
+
+		if (sql.startsWith("FROM")) {
+			String table = sql.substring(sql.indexOf("FROM"), sql.indexOf(".") + 1).replace(".", "_");
+			String[] arr = table.split(" ");
+			int len = table.length();
+			String newTable = arr[0] + " VIEW." + arr[1];
+			constructsql(sql.substring(len), res, r + newTable);
+
+		} else {
+			constructsql(sql.substring(1), res, r + sql.substring(0, 1));
+		}
+
+	}
+
+	static String sq(String sql) {
+		if (sql.equals("")) {
+			return "";
+		}
+
+		if (sql.equals(null)) {
+			return null;
+		}
+
+		String suf = sql.substring(sql.indexOf("FROM") + 5, sql.length());
+		String res = sq(suf);
+		if (sq(sql) != null) {
+			return res;
+		}
+
+		return null;
+	}
+
+	static void bMulti(int[] nums, int n, List<List<Integer>> res, List<Integer> tmp, int idx) {
+
+		if (n == 0) {
+			res.add(new ArrayList<>(tmp));
+			return;
+		}
+
+		if (n < 0) {
+			return;
+		}
+		System.err.println(idx);
+		for (int i = idx; i < nums.length; i++) {
+
+			tmp.add(nums[i]);
+			bMulti(nums, n - nums[i], res, tmp, i);
+			tmp.remove(tmp.size() - 1);
+
+		}
+
+	}
+
+	static boolean cans(int[] nums, int n) {
+		boolean[][] t = new boolean[nums.length + 1][n + 1];
+		for (int i = 0; i < nums.length + 1; i++) {
+			t[i][0] = true;
+		}
+
+		for (int i = 1; i < nums.length + 1; i++) {
+			for (int j = 1; j < n + 1; j++) {
+				if (nums[i - 1] <= j && t[i - 1][j - nums[i - 1]]) {
+					t[i][j] = true;
+				} else if (t[i - 1][j]) {
+					t[i][j] = true;
+				}
+			}
+		}
+
+		for (boolean[] b : t) {
+			System.err.println(Arrays.toString(b));
+		}
+
+		return t[nums.length][n];
+	}
+
+	static boolean targetSum(int[] nums, int target) {
+		int n = nums.length;
+		boolean[][] table = new boolean[n + 1][target + 1];
+		for (int i = 0; i < n + 1; i++) {
+			table[i][0] = true;
+		}
+
+		for (int i = 1; i < n + 1; i++) {
+			for (int j = 1; j < target + 1; j++) {
+				if (table[i - 1][j]) {
+					table[i][j] = true;
+				} else if (nums[i - 1] <= j && table[i - 1][j - nums[i - 1]]) {
+					table[i][j] = true;
+				}
+			}
+		}
+		return table[n][target];
 	}
 
 	static int[] cs(int t, int[] a) {

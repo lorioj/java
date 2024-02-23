@@ -37,7 +37,11 @@ public class BackTracking {
 
 //		Input: n = 3
 //		Output: ["((()))","(()())","(())()","()(())","()()()"]
-		System.err.println(generateParenthesis(3));
+//		System.err.println(generateParenthesis(3));
+
+		int[][] board = { { 1, 0, 0, 0 }, { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 1, 1, 1 } };
+		int[][] sol = new int[board.length][board.length];
+		System.err.println(maze(board, sol, 0, 0));
 
 	}
 
@@ -279,6 +283,49 @@ public class BackTracking {
 		}
 	}
 
+//	Input: nums = [1,1,1,1,1], target = 3
+//	Output: 5
+//	Explanation: There are 5 ways to assign symbols to make the sum of nums be target 3.
+//	-1 + 1 + 1 + 1 + 1 = 3
+//	+1 - 1 + 1 + 1 + 1 = 3
+//	+1 + 1 - 1 + 1 + 1 = 3
+//	+1 + 1 + 1 - 1 + 1 = 3
+//	+1 + 1 + 1 + 1 - 1 = 3
+	static int findTargetSumWays(int[] nums, int target) {
+		return findTargetSumWays(nums, target, 0, 0);
+
+	}
+
+	static int findTargetSumWays(int[] nums, int target, int curSum, int idx) {
+
+		if (idx == nums.length) {
+			return curSum == target ? 1 : 0;
+		}
+		int left = findTargetSumWays(nums, target, curSum + nums[idx], idx + 1);
+		int right = findTargetSumWays(nums, target, curSum - nums[idx], idx + 1);
+		return left + right;
+	}
+
+//	This is under Dynamic Programming
+	public int findTargetSumWaysDP(int[] nums, int target) {
+		int sum = 0;
+		for (int num : nums) {
+			sum += num;
+		}
+		if (sum < target || (sum + target) % 2 == 1) {
+			return 0;
+		}
+		int s = (sum + Math.abs(target)) / 2;
+		int[] dp = new int[s + 1];
+		dp[0] = 1;
+		for (int num : nums) {
+			for (int i = s; i >= num; i--) {
+				dp[i] += dp[i - num];
+			}
+		}
+		return dp[s];
+	}
+
 //	END OF MEDIUM P
 
 //	HARD P
@@ -376,5 +423,24 @@ public class BackTracking {
 	}
 
 //	END OF HARD P
+
+//	rat in a maze
+	static boolean maze(int[][] arr, int[][] sol, int x, int y) {
+		if (x == arr.length - 1 && y == arr.length - 1) {
+			return true;
+		}
+
+		if (x >= 0 && y >= 0 && x < arr.length && y < arr.length && arr[x][y] == 1) {
+			sol[x][y] = 1;
+			if (maze(arr, sol, x + 1, y) || maze(arr, sol, x, y + 1)) {
+				return true;
+			}
+			sol[x][y] = 0;
+			return false;
+		}
+
+		return false;
+
+	}
 
 }
