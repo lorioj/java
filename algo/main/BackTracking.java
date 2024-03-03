@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
+
 /**
  * Backtracking concept 1, choice 2, constrainst 3, goals
  * 
@@ -39,9 +41,40 @@ public class BackTracking {
 //		Output: ["((()))","(()())","(())()","()(())","()()()"]
 //		System.err.println(generateParenthesis(3));
 
-		int[][] board = { { 1, 0, 0, 0 }, { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 1, 1, 1 } };
-		int[][] sol = new int[board.length][board.length];
-		System.err.println(maze(board, sol, 0, 0));
+//		int[][] board = { { 1, 0, 0, 0 }, { 1, 1, 0, 0 }, { 1, 1, 0, 0 }, { 0, 1, 1, 1 } };
+//		int[][] sol = new int[board.length][board.length];
+//		System.err.println(maze(board, sol, 0, 0));
+
+//		String[] mapping = {"abc", "def"};
+//		
+//		List<String> res = new ArrayList<>();
+//		lc("01", "", mapping, res, 0);
+//		System.err.println(res);
+//		System.err.println(restoreIpAddresses("25525511135"));
+//
+//		int[][] grid = { { 0, 6, 0 }, { 5, 8, 7 }, { 0, 9, 0 } };
+//		System.err.println(getMaximumGold(grid));
+
+		
+		for(List<String> r : solveNQueens(4)) {
+//			System.err.println(r);
+			for(String s : r) {
+				System.err.println(s);
+			}
+			System.err.println();
+		}
+	}
+
+	static void lc(String p, String c, String[] strs, List<String> tmp, int idx) {
+		if (idx == p.length()) {
+			tmp.add(c);
+			return;
+		}
+
+		char[] letters = strs[p.charAt(idx) - '0'].toCharArray();
+		for (char ch : letters) {
+			lc(p, c + ch, strs, tmp, idx + 1);
+		}
 
 	}
 
@@ -330,6 +363,80 @@ public class BackTracking {
 
 //	HARD P
 
+	static List<List<String>> solveNQueens(int n) {
+		List<List<String>> res = new ArrayList<>();
+
+		char[][] board = new char[n][n];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				board[i][j] = '.';
+			}
+		}
+
+		solveNQueens(board, 0, res);
+		return res;
+
+	}
+
+	static void solveNQueens(char[][] board, int row, List<List<String>> res) {
+
+		if (row == board.length) {
+			res.add(constuct(board)); // our goal
+			return;
+		}
+
+		for (int col = 0; col < board.length; col++) {
+			board[row][col] = 'Q'; //our choice
+			if (isSafe(board, row, col)) { //out constrain
+				solveNQueens(board, row + 1, res);
+			}
+			board[row][col] = '.'; //undo our choid
+		}
+	}
+
+	static List<String> constuct(char[][] board) {
+		List<String> internal = new ArrayList<>();
+
+		for (int i = 0; i < board.length; i++) {
+			String s = new String(board[i]);
+			internal.add(s);
+		}
+		return internal;
+
+	}
+
+	static boolean isSafe(char[][] board, int row, int col) {
+
+		// for checking vertical row
+		for (int i = 0; i < row; i++) {
+			if (board[i][col] == 'Q') {
+				return false;
+			}
+		}
+
+		// for checking left diagonal
+
+		int maxLeft = Math.min(row, col);
+
+		for (int i = 1; i <= maxLeft; i++) {
+			if (board[row - i][col - i] == 'Q') {
+				return false;
+			}
+		}
+
+		// for checking right diagonal
+
+		int maxRight = Math.min(row, board.length - 1 - col);
+
+		for (int i = 1; i <= maxRight; i++) {
+			if (board[row - i][col + i] == 'Q') {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 //	Input: board = [
 //	["5","3",".",".","7",".",".",".","."],
 //	["6",".",".","1","9","5",".",".","."],
@@ -440,6 +547,99 @@ public class BackTracking {
 		}
 
 		return false;
+
+	}
+
+//	Input: s = "25525511135"
+//	Output: ["255.255.11.135","255.255.111.35"]
+
+	static List<String> restoreIpAddresses(String s) {
+//		List<List<String>> ans2 = new ArrayList<>();
+//		bt(s, new ArrayList<>(), ans2, 0, 0);
+
+		List<String> ans = new ArrayList<>();
+		backtrack(s, "", ans, 0, 0);
+		return ans;
+	}
+
+	static void bt(String s, List<String> tmp, List<List<String>> res, int idx, int dot) {
+
+		if (dot == 4 && idx == s.length()) {
+			res.add(new ArrayList<>(tmp));
+			return;
+		}
+		if (dot > 4) {
+			return;
+		}
+
+		for (int i = 1; i <= 3 && idx + i <= s.length(); i++) {
+			String pre = s.substring(idx, idx + i);
+			if (Integer.parseInt(pre) <= 255) {
+				tmp.add(pre);
+				bt(s, tmp, res, idx + i, dot + 1);
+				tmp.remove(tmp.size() - 1);
+			}
+		}
+
+	}
+
+	static void backtrack(String s, String path, List<String> ans, int index, int dot) {
+		if (dot > 4) {
+			return;
+		}
+
+		if (dot == 4 && index >= s.length()) {
+			ans.add(path.substring(0, path.length() - 1));
+			return;
+		}
+
+		for (int i = 1; i <= 3 && index + i <= s.length(); i++) {
+			String num = s.substring(index, index + i);
+			if (num.charAt(0) == '0' && i != 1)
+				break;
+			else if (Integer.parseInt(num) <= 255) {
+				backtrack(s, path + s.substring(index, index + i) + ".", ans, index + i, dot + 1);
+			}
+		}
+	}
+
+//	Input: grid = [[0,6,0],[5,8,7],[0,9,0]]
+//	Output: 24
+//	Explanation:
+//	[[0,6,0],
+//	 [5,8,7],
+//	 [0,9,0]]
+//	Path to get the maximum gold, 9 -> 8 -> 7.
+
+	static int max = 0; // 100% working is not static
+
+	static int getMaximumGold(int[][] grid) {
+		int rlen = grid.length;
+		int clen = grid[0].length;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[i].length; j++) {
+				if (grid[i][j] != 0) {
+					getMaximumGold(grid, i, j, rlen, clen, 0);
+				}
+			}
+		}
+
+		return max;
+	}
+
+	static void getMaximumGold(int[][] grid, int r, int c, int rlen, int clen, int cur) {
+
+		if (r < 0 || r >= rlen || c < 0 || c >= clen || grid[r][c] == 0) {
+			max = Math.max(max, cur);
+			return;
+		}
+		int val = grid[r][c];
+		grid[r][c] = 0;
+		getMaximumGold(grid, r + 1, c, rlen, clen, cur + val);
+		getMaximumGold(grid, r - 1, c, rlen, clen, cur + val);
+		getMaximumGold(grid, r, c + 1, rlen, clen, cur + val);
+		getMaximumGold(grid, r, c - 1, rlen, clen, cur + val);
+		grid[r][c] = val;
 
 	}
 
