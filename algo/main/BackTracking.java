@@ -19,11 +19,11 @@ public class BackTracking {
 
 	public static void main(String[] args) {
 
-//		char[][] board = new char[][] { 
-//		{ 'A', 'B', 'C', 'E' }, 
-//		{ 'S', 'F', 'C', 'S' }, 
-//		{ 'A', 'D', 'E', 'E' } };
-//		System.err.println(exist(board, "ABCD"));
+		char[][] board = new char[][] { 
+		{ 'A', 'B', 'C', 'E' }, 
+		{ 'S', 'F', 'C', 'S' }, 
+		{ 'A', 'D', 'E', 'E' } };
+		System.err.println(exist(board, "ABCD"));
 
 //		System.err.println(subsets(new int[] { 1, 2, 3 })); // result: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
 
@@ -55,10 +55,9 @@ public class BackTracking {
 //		int[][] grid = { { 0, 6, 0 }, { 5, 8, 7 }, { 0, 9, 0 } };
 //		System.err.println(getMaximumGold(grid));
 
-		
-		for(List<String> r : solveNQueens(4)) {
+		for (List<String> r : solveNQueens(4)) {
 //			System.err.println(r);
-			for(String s : r) {
+			for (String s : r) {
 				System.err.println(s);
 			}
 			System.err.println();
@@ -359,6 +358,13 @@ public class BackTracking {
 		return dp[s];
 	}
 
+	static boolean canPartitionKSubsets(int[] nums, int k) {
+		
+		
+		return true;
+
+	}
+
 //	END OF MEDIUM P
 
 //	HARD P
@@ -386,11 +392,11 @@ public class BackTracking {
 		}
 
 		for (int col = 0; col < board.length; col++) {
-			board[row][col] = 'Q'; //our choice
-			if (isSafe(board, row, col)) { //out constrain
+			board[row][col] = 'Q'; // our choice
+			if (isSafe(board, row, col)) { // out constrain
 				solveNQueens(board, row + 1, res);
 			}
-			board[row][col] = '.'; //undo our choid
+			board[row][col] = '.'; // undo our choid
 		}
 	}
 

@@ -200,34 +200,14 @@ public class Main {
 //		StringBuilder sb = new StringBuilder();
 //		constructsql(sql, sb, "");
 //		System.err.println(sb.toString());
-
-		System.err.println(cs(new int[] { 2, 3, 5 }, 8));
+		
 
 	}
 
-	static List<List<Integer>> cs(int[] nums, int target) {
-		List<List<Integer>> res = new ArrayList<>();
-		cs(nums, target, res, new ArrayList<>(), 0);
-		return res;
-	}
 
-	static void cs(int[] nums, int target, List<List<Integer>> res, List<Integer> tmp, int idx) {
-
-		if (target == 0) {
-			res.add(new ArrayList<>(tmp));
-			return;
-		}
-
-		if (target < 0) {
-			return;
-		}
-
-		for (int i = idx; i < nums.length; i++) {
-			tmp.add(nums[i]);
-			cs(nums, target - nums[i], res, tmp, i);
-			tmp.remove(tmp.size() - 1);
-		}
-	}
+	
+	
+	
 
 	static void constructsql(String sql, StringBuilder res, String r) {
 
