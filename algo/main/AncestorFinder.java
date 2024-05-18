@@ -19,8 +19,16 @@ public class AncestorFinder {
 		for (Person p : ancestors(m, "max")) {
 			System.err.println(p.getName());
 			printP(p.getChildren());
-
 		}
+
+		
+		// List<Person> grand = ancestors(m, null); // start from level 0
+	 //        for (Person p : grand) {
+	 //            System.err.println(p.getName());
+	 //            TreeNode parent = new DefaultTreeNode(p, root);
+	 //            printP(p.getChildren(), parent); 
+	 //        }
+		
 	}
 
 	static void printP(List<Person> l) {
@@ -34,6 +42,16 @@ public class AncestorFinder {
 		}
 
 	}
+	
+	//  static void printP(List<Person> l, TreeNode parent) {
+	//         if (l == null) {
+	//                 return;
+	//         }
+	//         for (Person p : l) {
+	//             TreeNode c = new DefaultTreeNode(p, parent);
+	//             printP(p.getChildren(), c); 
+	//         }
+	// }
 
 	public static List<Person> ancestors(Map<String, List<String>> g, String p) {
 		if (g.containsKey(p)) {
