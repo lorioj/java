@@ -16,14 +16,16 @@ import javax.net.ssl.SSLContext;
  */
 
 public class BackTracking {
-
+	
 	public static void main(String[] args) {
 
 		char[][] board = new char[][] { 
 		{ 'A', 'B', 'C', 'E' }, 
 		{ 'S', 'F', 'C', 'S' }, 
 		{ 'A', 'D', 'E', 'E' } };
-		System.err.println(exist(board, "ABCD"));
+		System.err.println(exist(board, "ABCS"));
+		
+		
 
 //		System.err.println(subsets(new int[] { 1, 2, 3 })); // result: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
 
@@ -62,6 +64,7 @@ public class BackTracking {
 			}
 			System.err.println();
 		}
+		
 	}
 
 	static void lc(String p, String c, String[] strs, List<String> tmp, int idx) {

@@ -3,6 +3,9 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
+
+import javax.accessibility.AccessibleValue;
 
 public class Array {
 
@@ -15,11 +18,16 @@ public class Array {
 //		System.err.println(maxArea(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 }));
 
 		System.err.println(spiralOrder(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }));
+		
+		System.err.println(calculate("6/2"));
+		
+		System.err.println(threeSum(new int[] {1,1,2,3,5}, 6));
 
 	}
 
 	static int maxArea(int[] height) {
 
+	
 		int max = 0;
 
 		int l = 0;
@@ -110,7 +118,7 @@ public class Array {
 
 				if (total > target) {
 					k--;
-				} else if (total < 0) {
+				} else if (total < target) {
 					j++;
 				} else {
 					r.add(new ArrayList<>(Arrays.asList(nums[i], nums[j], nums[k])));
@@ -208,5 +216,40 @@ public class Array {
 
 		return res;
 
+	}
+	
+	
+	//hard
+	static int calculate(String s) {
+		 if(s == null) return 0;
+	        
+		    int result = 0;
+		    int sign = 1;
+		    int num = 0;
+		            
+		    Stack<Integer> stack = new Stack<Integer>();
+		    stack.push(sign);
+		            
+		    for(int i = 0; i < s.length(); i++) {
+		        char c = s.charAt(i);
+		                
+		        if(c >= '0' && c <= '9') {
+		            num = num * 10 + (c - '0');
+		                    
+		        } else if(c == '+' || c == '-') {
+		            result += sign * num;
+		            sign = stack.peek() * (c == '+' ? 1: -1); 
+		            num = 0;
+		                    
+		        } else if(c == '(') {
+		            stack.push(sign);
+		                    
+		        } else if(c == ')') {
+		            stack.pop();
+		        }
+		    }
+		            
+		    result += sign * num;
+		    return result;
 	}
 }
