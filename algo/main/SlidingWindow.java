@@ -33,8 +33,7 @@ public class SlidingWindow {
 			} else {
 
 			}
-		}
-
+		} 
 		return res;
 	}
 

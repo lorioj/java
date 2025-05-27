@@ -11,14 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-
 public class Main {
-	
-	
 
 	public static void main(String[] args) {
-		
-	
 
 //		int[][] grid = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 //		System.err.println(shiftGrid(grid, 1));
@@ -226,70 +221,140 @@ public class Main {
 //		System.err.println(csum(0, new int[] { 2, 4, 8 }, 10));
 
 //		System.err.println(canContruct("zz", new String[] {"ab", "abc", "cd", "def", "abcd"}));
-		
-		
+
 //		System.err.println(howConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));
 //		System.out.println(fibb(7));
-		
-		
 
 	}
-	
-	
-	static int longest(String s) {
-		char[] arr = s.toCharArray();
-		
-		int l = 0;
-		int c = 0;
-		for(int r = 0; r < s.length(); r++) {
-			if(arr[r] == 0) {
-				
+
+	public int countCharacters(String[] words, String chars) {
+		int res = 0;
+
+		int[] count = new int[26];
+
+		for (char c : chars.toCharArray()) {
+			count[c - 'a']++;
+		}
+
+		for (String w : words) {
+			if (canForm(w, count)) {
+				res += w.length();
 			}
 		}
-		
+
+		return res;
+
+	}
+
+	static boolean canForm(String w, int[] counts) {
+		int[] c = new int[26];
+
+		for (char ch : w.toCharArray()) {
+			int x = ch - 'a';
+			c[x]++;
+
+			if (c[x] > counts[x]) {
+				return false;
+			}
+		}
+
+		return true;
+
+	}
+
+	// 100% work
+	static String minRemoveToMakeValid(String s) {
+		int open = 0;
+		int close = 0;
+		int flag = 0;
+
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				open++;
+				flag++;
+			} else if (s.charAt(i) == ')' && flag > 0) {
+				close++;
+				flag--;
+			}
+
+		}
+
+		int k = Math.min(open, close);
+		open = k;
+		close = k;
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				if (open > 0) {
+					open--;
+					sb.append(s.charAt(i));
+				}
+				continue;
+			}
+			if (s.charAt(i) == ')') {
+				if (close > 0 && close > open) {
+					close--;
+					sb.append(s.charAt(i));
+				}
+				continue;
+			}
+
+			sb.append(s.charAt(i));
+		}
+
+		return sb.toString();
+
+	}
+
+	static int longest(String s) {
+		char[] arr = s.toCharArray();
+
+		int l = 0;
+		int c = 0;
+		for (int r = 0; r < s.length(); r++) {
+			if (arr[r] == 0) {
+
+			}
+		}
+
 		return c;
 	}
-	
-	
+
 	static void fuel(int[] gas, int[] fuel) {
-		
+
 	}
-	
-	
+
 	static boolean canSum(int[] arr, int t) {
-		
-		if(t == 0) {
+
+		if (t == 0) {
 			return true;
 		}
-		if(t < 0) {
+		if (t < 0) {
 			return false;
 		}
-		
-		
-		for(int a : arr) {
+
+		for (int a : arr) {
 			int r = t - a;
-			if(canSum(arr, r)) {
+			if (canSum(arr, r)) {
 				return true;
 			}
 		}
-		
+
 		return false;
-		
+
 	}
-	
-	
- 
+
 	static int fibb(int n) {
-		if(n == 0) {
+		if (n == 0) {
 			return 0;
-		}else if(n == 1) {
+		} else if (n == 1) {
 			return 1;
-		}else {
+		} else {
 			return fibb(n - 1) + fibb(n - 2);
 		}
 	}
-	
-	
 
 	static class T {
 		String p;
@@ -355,7 +420,7 @@ public class Main {
 		return Math.max(l, r);
 
 	}
-	
+
 //
 //	static int maxDepth(Node root) {
 //		if (root == null) {
@@ -1011,7 +1076,6 @@ public class Main {
 		}
 
 	}
-	
 
 	static long maximumSubarraySum(int[] nums, int k) {
 
@@ -1060,28 +1124,26 @@ public class Main {
 
 		int c = 0;
 		String s = String.valueOf(num);
-		
-		
-		for(int i = 0; i < s.length(); i++) {
-			
+
+		for (int i = 0; i < s.length(); i++) {
+
 			int w = i + k - 1;
-			if(w < s.length()) {
-				int j = i; 
+			if (w < s.length()) {
+				int j = i;
 				String sa = "";
-				while(j <= w) {
+				while (j <= w) {
 					sa += s.charAt(j) + "";
 					j++;
 				}
 				Integer v = Integer.valueOf(sa);
-				
+
 				int pv = v.intValue();
 				System.err.println(pv);
 				boolean r = num % pv == 0;
-				if(r) {
+				if (r) {
 					c++;
 				}
-				
-				
+
 			}
 		}
 		return c;
