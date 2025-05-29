@@ -33,7 +33,7 @@ public class SlidingWindow {
 			} else {
 
 			}
-		} 
+		}
 		return res;
 	}
 
@@ -159,7 +159,7 @@ public class SlidingWindow {
 		for (char c : s.toCharArray()) {
 			map.put(c, map.getOrDefault(c, 0) + 1);
 		}
-		
+
 		boolean valid = true;
 
 		StringBuilder sb = new StringBuilder();
@@ -191,6 +191,37 @@ public class SlidingWindow {
 
 	static boolean checkInclusion(String s1, String s2) {
 		return false;
+	}
+
+	/**
+	 * Input: word = "aeiaaioaaaaeiiiiouuuooaauuaeiu" Output: 13 Explanation: The
+	 * longest beautiful substring in word is "aaaaeiiiiouuu" of length 13.
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public int longestBeautifulSubstring(String word) {
+
+		int l = 0;
+		int max = 0;
+		int v = 1;
+
+		for (int r = 1; r < word.length(); r++) {
+
+			if (word.charAt(r - 1) < word.charAt(r)) {
+				v++;
+			} else if (word.charAt(r - 1) > word.charAt(r)) {
+				v = 1;
+				l = r;
+			}
+
+			if (v == 5) {
+				max = Math.max(max, r - l + 1);
+			}
+		}
+
+		return max;
+
 	}
 
 }
