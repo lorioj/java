@@ -224,4 +224,34 @@ public class SlidingWindow {
 
 	}
 
+	/**
+	 * easy problem 
+	 * Input: word = "aeiouu" Output: 2 Explanation: The vowel
+	 * substrings of word are as follows (underlined): - "aeiouu" - "aeiouu"
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public int countVowelSubstrings(String word) {
+		int ans = 0;
+		int n = word.length();
+
+		for (int i = 0; i < n; i++) {
+			Set<Character> s = new HashSet<>();
+			for (int j = i; j < n && isV(word.charAt(j)); j++) { // note the isV is inside the loop that mean the loop will break
+				s.add(word.charAt(j));
+				if (s.size() == 5)
+					++ans;
+
+			}
+		}
+		return ans;
+	}
+
+	static boolean isV(char c) {
+		return (c == 'a' && c == 'e' && c == 'i' && c == 'o' && c == 'u');
+		
+	}
+		
+
 }

@@ -309,7 +309,6 @@ public class Array {
 					return false;
 				}
 			}
-
 		}
 
 		return true;
