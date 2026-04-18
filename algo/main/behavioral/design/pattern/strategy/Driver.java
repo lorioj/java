@@ -3,6 +3,7 @@ package main.behavioral.design.pattern.strategy;
 public class Driver {
 	
 	/**
+	 * Lets you switch algorithms at runtime.
 	 * -this encapsulate each of one and make it interchangeable
 	 * -rational lets the algorithm very independently from the client you use it. (decouple it).
 	 * -e.g in list
