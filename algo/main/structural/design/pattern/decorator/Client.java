@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Adds behavior dynamically.
  * You can also refer the sample to the java Stream API
  * 
  * @author John
