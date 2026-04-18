@@ -1,5 +1,9 @@
 package main.behavioral.design.pattern.observer;
 
+/**
+ * Defines a subscription mechanism.
+ */
+
 public class Client {
 	public static void main(String[] args) {
 			
