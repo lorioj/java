@@ -2,6 +2,7 @@ package main.behavioral.design.pattern.observer;
 
 /**
  * Defines a subscription mechanism.
+ * Use when: event systems, notifications, UI updates.
  */
 
 public class Client {
